@@ -1,4 +1,5 @@
 hf_download/
+imgs/outputs/
 private/
 *.safetensors
 

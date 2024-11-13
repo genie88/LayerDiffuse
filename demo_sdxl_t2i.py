@@ -1,7 +1,7 @@
 import os
 
-os.environ['HF_HOME'] = 'D:/hf_home'
-
+os.environ['HF_HOME'] = './hf_download/hf_home'
+import sys
 import numpy as np
 import torch
 import memory_management
@@ -119,15 +119,12 @@ def resize_without_crop(image, target_width, target_height):
 
 with torch.inference_mode():
     guidance_scale = 7.0
-
+    prompt_text = sys.argv[1]
     rng = torch.Generator(device=memory_management.gpu).manual_seed(12345)
 
     memory_management.load_models_to_gpu([text_encoder, text_encoder_2])
 
-    positive_cond, positive_pooler = pipeline.encode_cropped_prompt_77tokens(
-        'glass bottle, high quality'
-    )
-
+    positive_cond, positive_pooler = pipeline.encode_cropped_prompt_77tokens(prompt_text)
     negative_cond, negative_pooler = pipeline.encode_cropped_prompt_77tokens(default_negative)
 
     memory_management.load_models_to_gpu([unet])
